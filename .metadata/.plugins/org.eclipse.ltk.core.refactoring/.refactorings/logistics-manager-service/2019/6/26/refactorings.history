@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private void parseStringtoInteger(String key, BasicData data)&apos; from &apos;com.sxt.service.impl.BasicServiceImpl.query()&apos; to &apos;com.sxt.service.impl.BasicServiceImpl&apos;&#x0D;&#x0A;- Original project: &apos;logistics-manager-service&apos;&#x0D;&#x0A;- Method name: &apos;parseStringtoInteger&apos;&#x0D;&#x0A;- Destination type: &apos;com.sxt.service.impl.BasicServiceImpl&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;parseStringtoInteger&apos;" destination="0" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src\/main\/java&lt;com.sxt.service.impl{BasicServiceImpl.java" name="parseStringtoInteger" replace="false" selection="1106 204" stamp="1561521850782" version="1.0" visibility="2"/>
+</session>

@@ -1,0 +1,79 @@
+package com.sxt.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.sxt.realm.MyRealm;
+
+/**
+ * 页面控制器
+ */
+@Controller
+public class PageController {
+	@Resource
+	private MyRealm realm;
+    /**
+     * 跟目录就跳转到main.jsp页面
+     * @return
+     */
+    @RequestMapping("/")
+    public String showMain(){
+        return "login";
+    }
+    
+    /**
+     * restful 风格
+     *    传递的是什么数据就跳转到对应的页面
+     *    @PathVariable 将url中的path赋值给 参数
+     * @param path
+     * @return
+     */
+    @RequestMapping("/{path}")
+    public String showTop(@PathVariable String path){
+        return path;
+    }
+    /**
+	 * 登录认证失败后进入
+	 * @return
+	 */
+	@RequestMapping("/login.do")
+	public String loginfail(Model model, HttpServletRequest request){
+        Object ex = request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
+        if (ex != null) {
+            System.out.println(ex.toString() + "----------");
+        }
+        if (UnknownAccountException.class.getName().equals(ex)) {
+            System.out.println("----账号不正确----->");
+            model.addAttribute("msg", "账号不正确");
+        } else if (IncorrectCredentialsException.class.getName().equals(ex)) {
+            System.out.println("----密码不正确----->");
+            model.addAttribute("msg", "密码不正确");
+        } else {
+            System.out.println("----其他错误----->");
+            model.addAttribute("msg", "其他错误");
+        }
+		return "login";
+	}
+	/**
+	 * 退出登录
+	 * @return
+	 */
+	@RequestMapping("/logout.do")
+	public String logout(){
+	    SecurityUtils.getSubject().logout();
+	    return "login";
+	}
+	@RequestMapping("/clear")
+	public void clearCache(){
+		realm.clearCache();
+	}
+}

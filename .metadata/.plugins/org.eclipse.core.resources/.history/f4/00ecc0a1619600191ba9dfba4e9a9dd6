@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- remenberMe配置 -->
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="rememberMe" />
+		<property name="httpOnly" value="true" />
+		<!-- 默认记住7天（单位：秒） -->
+		<property name="maxAge" value="604800" />
+	</bean>
+	<!-- rememberMe管理器 -->
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<property name="cipherKey"
+			value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />
+		<property name="cookie" ref="rememberMeCookie" />
+	</bean>
+
+	<!-- 定义凭证匹配器 -->
+	<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"
+		id="credentialsMatcher">
+		<!-- 配置散列算法 -->
+		<property name="hashAlgorithmName" value="md5" />
+		<!-- 配置散列次数 -->
+		<property name="hashIterations" value="3" />
+	</bean>
+
+	<!-- 注册自定义Realm -->
+	<bean class="com.sxt.realm.MyRealm" id="myRealm">
+		<!-- 配置凭证匹配器 -->
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
+
+	<!-- 注册SecurityManager -->
+	<bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"
+		id="securityManager">
+		<!-- 配置自定义Realm -->
+		<property name="realm" ref="myRealm" />
+		<!-- 注册rememberMe -->
+		<property name="rememberMeManager" ref="rememberMeManager"/>
+	</bean>
+	<!-- 配置自定义的表单过滤器 -->
+	<bean class="com.sxt.filter.CustomFormAuthenticationFilter" id="CustomFormAuthenticationFilter">
+		<!-- 可以修改表单提交参数的名称 -->
+		<property name="usernameParam" value="userName"></property>
+	</bean>
+
+	<!-- 注册ShiroFilterFactoryBean 注意id必须和web.xml中注册的targetBeanName的值一致 -->
+	<bean class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"
+		id="shiro">
+		<!-- 注册SecurityManager -->
+		<property name="securityManager" ref="securityManager" />
+		<!-- 登录地址 如果用户请求的的地址是 login.do 那么会对该地址认证 -->
+		<property name="loginUrl" value="/user/login.do" />
+		<!-- 登录成功的跳转地址 -->
+		<property name="successUrl" value="/main" />
+		<!-- 访问未授权的页面跳转的地址 -->
+		<property name="unauthorizedUrl" value="/refuse" />
+		<!-- 配置自定义的过滤器 -->
+		<property name="filters">
+			<map>
+				<entry key="authc" value-ref="CustomFormAuthenticationFilter"></entry>
+			</map>
+		</property>
+		<!-- 设置 过滤器链 -->
+		<property name="filterChainDefinitions">
+			<value>
+				<!--加载顺序从上往下。 authc需要认证 anon可以匿名访问的资源 -->
+				/ = anon
+				/login = anon
+				/images/** = anon
+				/css/** = anon
+				/js/** = anon
+				/lib/** = anon
+				/login.do = authc
+				/** = authc
+			</value>
+		</property>
+	</bean>
+</beans>

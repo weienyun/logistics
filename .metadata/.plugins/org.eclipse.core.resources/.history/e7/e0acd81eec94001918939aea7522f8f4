@@ -1,0 +1,28 @@
+package com.sxt.vo;
+
+import java.util.Arrays;
+
+import com.sxt.pojo.User;
+
+public class UserVo {
+	public User user;
+	public Integer[] rolesId;
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public Integer[] getRolesId() {
+		return rolesId;
+	}
+	public void setRolesId(Integer[] rolesId) {
+		this.rolesId = rolesId;
+	}
+	@Override
+	public String toString() {
+		return "UserVo [user=" + user + ", rolesId=" + Arrays.toString(rolesId) + "]";
+	}
+	
+	
+}

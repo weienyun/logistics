@@ -1,0 +1,51 @@
+package com.sxt.service;
+
+import java.util.List;
+
+import com.sxt.pojo.Role;
+import com.sxt.pojo.User;
+import com.sxt.vo.UserVo;
+
+public interface IUserService {
+	/**
+	 * 查询用户
+	 * @param user
+	 * @return
+	 */
+	public List<User> query(User user);
+	/**
+	 * 根据userId查询用户信息
+	 * @return
+	 */
+	public User queryById(Integer userId);
+	/**
+	 * 填加用户
+	 * @param user
+	 * @throws Exception
+	 */
+	public void addUser(UserVo vo) throws Exception;
+	/**
+	 * 修改用户
+	 * @param user
+	 * @throws Exception
+	 */
+	public void updateUser(User user) throws Exception;
+	/**
+	 * 删除用户
+	 * @param userId
+	 * @throws Exception
+	 */
+	public void deleteUser(Integer userId) throws Exception;
+	/**
+	 * 查询所有角色
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Role> getRoles()throws Exception;
+	/**
+	 * 根据用户id查询出所拥有的角色
+	 * @param userId
+	 * @return
+	 */
+	public List<Role> queryRolesByUserId(Integer userId);
+}

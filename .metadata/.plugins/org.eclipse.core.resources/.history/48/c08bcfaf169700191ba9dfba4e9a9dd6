@@ -1,0 +1,42 @@
+package com.sxt.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import com.sxt.mapper.BasicDataMapper;
+import com.sxt.pojo.BasicData;
+import com.sxt.pojo.BasicDataExample;
+import com.sxt.service.IBasicService;
+
+public class BasicServiceImpl implements IBasicService{
+	@Resource
+	private BasicDataMapper mapper;
+	
+	@Override
+	public List<BasicData> query(BasicData bd) {
+		// TODO Auto-generated method stub
+		BasicDataExample example = new BasicDataExample();
+		
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public void addBasicData(BasicData bd) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteBasicData(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateBasicData(BasicData bd) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

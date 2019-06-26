@@ -33,10 +33,11 @@
             它的spring是不会去扫描jar包中的相应目录的，只会去他当前项目下获取。其实要改变这种情况很简单，
             在classpath后面加一个*号，*号的作用是让spring的扫描涉及全个目录包括jar
         -->
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+       <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
-    <!-- Mapper映射文件的包扫描器 -->
+    <!-- Mapper映射文件的包扫描器   -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.sxt.mapper" />
     </bean>
+  
 </beans>

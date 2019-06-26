@@ -1,0 +1,35 @@
+package com.sxt.vo;
+
+public class BasePage {
+	//当前页
+	protected Integer pageNum =1;
+	//每页显示的条数
+	protected Integer pageSize =5;
+	
+	protected String[] selectKey;
+	
+	public String[] getSelectKey() {
+		return selectKey;
+	}
+	public void setSelectKey(String[] selectKey) {
+		this.selectKey = selectKey;
+	}
+	public Integer getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
+	}
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+	@Override
+	public String toString() {
+		return "BasePage [pageNum=" + pageNum + ", pageSize=" + pageSize + "]";
+	}
+	
+	
+}

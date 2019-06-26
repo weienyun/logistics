@@ -1,0 +1,5 @@
+package com.sxt.vo;
+
+public class BasePage {
+
+}

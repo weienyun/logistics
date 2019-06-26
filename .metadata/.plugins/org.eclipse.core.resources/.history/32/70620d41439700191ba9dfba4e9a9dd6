@@ -1,0 +1,27 @@
+package com.sxt.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.sxt.pojo.BasicData;
+import com.sxt.service.IBasicService;
+
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+	
+	@Resource
+	private IBasicService basicService;
+	
+	@RequestMapping("/query")
+	public String queryBasicData(Model model,BasicData bd){
+		List<BasicData> list = basicService.query(bd);
+		model.addAttribute("list",list);
+		return "basic/basic";
+	}
+}

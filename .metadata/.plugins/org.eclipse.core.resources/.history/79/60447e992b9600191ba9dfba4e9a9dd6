@@ -1,0 +1,39 @@
+package com.sxt.realm;
+
+import javax.annotation.Resource;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+
+import com.sxt.service.IUserService;
+import com.sxt.vo.UserVo;
+/**
+ * 自定义域 认证授权
+ * @author Administrator
+ *
+ */
+public class MyRealm extends AuthorizingRealm {
+	@Resource
+	private IUserService userService;
+	
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		// TODO Auto-generated method stub
+		String username = (String) principals.getPrimaryPrincipal();
+		UserVo vo = new UserVo();
+		vo.getUser().setUserName(username);
+		userService.query(vo);
+		return null;
+	}
+
+	@Override
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

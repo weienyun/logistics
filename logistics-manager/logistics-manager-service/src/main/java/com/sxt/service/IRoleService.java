@@ -5,9 +5,6 @@ import java.util.List;
 import com.sxt.pojo.Role;
 /**
  * 角色
- * @author 波波烤鸭
- *
- * dengpbs@163.com
  */
 public interface IRoleService {
     /**
@@ -37,4 +34,16 @@ public interface IRoleService {
      * @throws Exception
      */
     public void deleteRole(int id) throws Exception;
+    /**
+     * 根据userid查询出所拥有的角色
+     * @param userId
+     * @return
+     */
+	public List<Role> queryRoleByUserId(Integer userId);
+	/**
+	 * 根据userId删除用户的角色（子表）
+	 * @param userId
+	 */
+	public void deleteUserRoleByUserId(Integer userId);
+
 }

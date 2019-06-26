@@ -1,0 +1,10 @@
+package com.sxt;
+
+import org.apache.shiro.crypto.hash.Md5Hash;
+
+public class Test {
+	public static void main(String[] args) {
+		Md5Hash md = new Md5Hash("123","abc88",3);
+		System.out.println(md.toString());
+	}
+}

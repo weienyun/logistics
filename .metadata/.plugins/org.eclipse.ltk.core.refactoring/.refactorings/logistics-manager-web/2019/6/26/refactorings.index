@@ -1,0 +1,14 @@
+1561345791034	Move 'login.jsp' to 'jsp'
+1561346022778	Move 'applicationContext-shiro.xml' to 'spring'
+1561346026353	Delete element
+1561346081302	Delete element
+1561364247813	Move 'refuse.jsp' to 'webapp'
+1561366446768	Rename package 'list'
+1561433943201	Delete element
+1561445347498	Copy file
+1561445373943	Rename resource 'basicdata'
+1561445394120	Rename resource 'user.jsp'
+1561445430142	Rename resource 'basicData.jsp'
+1561456437174	Copy file
+1561464101859	Copy file
+1561464124967	Rename resource 'updateUser.jsp'

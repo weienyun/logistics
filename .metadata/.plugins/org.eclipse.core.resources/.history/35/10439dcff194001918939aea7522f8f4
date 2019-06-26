@@ -1,0 +1,101 @@
+package com.sxt.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.sxt.pojo.Role;
+import com.sxt.pojo.User;
+import com.sxt.service.IUserService;
+import com.sxt.vo.UserVo;
+
+/**
+ * 用户控制层
+ */
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+	// @Autowired
+	@Resource
+	private IUserService userService;
+
+	/*
+	 * 查询
+	 */
+	@RequestMapping("/queryPage")
+	// @ResponseBody
+	public String queryPage(UserVo vo, Model model) {
+		List<User> list = userService.query(vo.getUser());
+		model.addAttribute("pagemodel", list);
+		return "user/user";
+	}
+	/**
+	 * 添加修改用户先取得roles 返回修改信息页面updateUser.jsp
+	 * 如果有select==1 代表查看用户信息  userId不为空则为修改  为空添加
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/goAddOrUpdate")
+	public String goAddOrUpdate(Integer userId, Model model, Integer select) throws Exception {
+		//userId不为空 修改用户
+		if (userId!=null && userId>0) {
+			User user = userService.queryById(userId);
+			// 查询用户所拥有角色
+			List<Role> roles = userService.queryRolesByUserId(userId);
+			model.addAttribute("roles", roles);
+			model.addAttribute("user", user);
+			//如果有select==1 代表查看用户信息
+			if (select!=null&&select == 1) {
+				model.addAttribute("select", 1);
+			}
+		}
+			List<Role> roles2 = userService.getRoles();
+			model.addAttribute("list", roles2);
+			return "user/updateUser";
+		
+	}
+
+	/**
+	 * 添加修改用户
+	 * userId不为空 修改用户 为空 添加用户
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/addOrUpdateUser")
+	public String addOrUpdateUser(Integer userId, UserVo vo, Model model) throws Exception {
+		if (userId!=null&&userId>0) {
+			userService.updateUser(vo,userId);
+			List<User> list = userService.query(null);
+			model.addAttribute("list", list);
+			return "user/user";
+		}else{
+			userService.addUser(vo);
+			List<User> list = userService.query(null);
+			model.addAttribute("list", list);
+			return "user/user";
+		}
+	}
+
+	/**
+	 * 根据userId删除用户
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/deleteUser")
+	public String updateUser(Integer userId, Model model) throws Exception {
+		userService.deleteUser(userId);
+		List<User> list = userService.query(null);
+		model.addAttribute("list", list);
+		return "user/user";
+	}
+
+}

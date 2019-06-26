@@ -81,6 +81,11 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="queryRolesByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select  r.*
+  	from t_role r
+  	where r.role_id in(select role_id from t_user_role where user_id = #{userId})
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -96,6 +101,9 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+  </delete>
+    <delete id="deleteUserRolesByUserId" parameterType="java.lang.Integer">
+  	delete from t_user_role where user_id =#{userId}
   </delete>
   <insert id="insert" parameterType="com.sxt.pojo.Role">
     insert into t_role (role_id, role_name, role_desc

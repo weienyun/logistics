@@ -1,0 +1,48 @@
+package com.sxt.service;
+
+import java.util.List;
+
+import com.sxt.pojo.Role;
+/**
+ * 角色
+ */
+public interface IRoleService {
+    /**
+     * 根据条件查询角色
+     * @param role
+     * @return
+     */
+    public List<Role> query(Role role);
+    
+    /**
+     * 添加角色信息
+     * @param role
+     * @throws Exception
+     */
+    public void addRole(Role role) throws Exception;
+    
+    /**
+     * 根据id更新角色信息
+     * @param role
+     * @throws Exception
+     */
+    public void updateRole(Role role) throws Exception;
+    
+    /**
+     * 根据id删除角色信息
+     * @param id
+     * @throws Exception
+     */
+    public void deleteRole(int id) throws Exception;
+    /**
+     * 根据userid查询出所拥有的角色
+     * @param userId
+     * @return
+     */
+	public List<Role> queryRoleByUserId(Integer userId);
+	/**
+	 * 根据userId删除用户的角色（子表）
+	 * @param userId
+	 */
+	public void deleteUserRoleByUserId(Integer userId);
+}

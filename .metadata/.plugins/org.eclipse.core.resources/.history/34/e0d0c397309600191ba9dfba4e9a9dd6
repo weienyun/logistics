@@ -1,0 +1,102 @@
+package com.sxt.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sxt.mapper.UserMapper;
+import com.sxt.pojo.Role;
+import com.sxt.pojo.User;
+import com.sxt.pojo.UserExample;
+import com.sxt.service.IRoleService;
+import com.sxt.service.IUserService;
+import com.sxt.vo.UserVo;
+@Service
+public class UserServiceImpl implements IUserService{
+	@Resource
+	private UserMapper usermapper;
+	@Resource
+	public IRoleService roleService;
+
+
+	@Override
+	public void addUser(UserVo vo) throws Exception {
+		// TODO Auto-generated method stub
+		User user = vo.getUser();
+		usermapper.insertSelective(user);
+		Integer userId = user.getUserId();
+		Integer[] roles = vo.getRolesId();
+		if (roles!=null && roles.length>0) {
+			for (Integer roleId : roles) {
+				usermapper.insertUserRole(userId, roleId);
+			}
+		}
+	}
+
+	@Override
+	public void updateUser(UserVo vo ,Integer userId) throws Exception {
+		// TODO Auto-generated method stub
+		User user = vo.getUser();
+		user.setUserId(userId);
+		//用updateByPrimaryKeySelective不能用updateByPrimaryKey(会使密码为空)
+		usermapper.updateByPrimaryKeySelective(user);
+		//修改角色 先删除在添加
+		Integer[] roleIds = vo.getRolesId();
+		roleService.deleteUserRoleByUserId(userId);
+		for (Integer roleId : roleIds) {
+			usermapper.insertUserRole(userId, roleId);
+		}
+		
+	}
+
+	@Override
+	public void deleteUser(Integer userId) throws Exception {
+		// TODO Auto-generated method stub
+		//删除用户所拥有的角色
+		roleService.deleteUserRoleByUserId(userId);
+		usermapper.deleteByPrimaryKey(userId);
+	}
+
+	@Override
+	public List<Role> getRoles() throws Exception {
+		// TODO Auto-generated method stub
+		Role role = null;
+		List<Role> list = roleService.query(role);
+		return list;
+	}
+
+	@Override
+	public User queryById(Integer userId) {
+		// TODO Auto-generated method stub
+		return usermapper.selectByPrimaryKey(userId);
+	}
+
+	@Override
+	public List<Role> queryRolesByUserId(Integer userId) {
+		// TODO Auto-generated method stub
+		return roleService.queryRoleByUserId(userId);
+	}
+	/**
+	 * 分页查询
+	 */
+	@Override
+	public PageInfo<User> query(UserVo vo) {
+		// TODO Auto-generated method stub
+		User user = vo.getUser();
+		UserExample example = new UserExample();
+		if (user!=null &&user.getUserName()!=null&&!"".equals(user.getUserName())) {
+			example.createCriteria().andUserNameLike("%"+user.getUserName()+"%");
+		}
+		PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+		System.out.println(user.getUserName());
+		List<User> list = usermapper.selectByExample(example);
+		PageInfo<User> pageInfo = new PageInfo<>(list);
+		System.out.println(pageInfo);
+		return pageInfo;
+	}
+
+}

@@ -1,0 +1,11 @@
+package list;
+
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+/**
+ * 登录认证 成功后将信息保存到session（shiro）中
+ * @author Administrator
+ *
+ */
+public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
+
+}

@@ -1,0 +1,16 @@
+package com.sxt.controller;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.sxt.service.IBasicService;
+
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+	
+	@Resource
+	private IBasicService basicService;
+}

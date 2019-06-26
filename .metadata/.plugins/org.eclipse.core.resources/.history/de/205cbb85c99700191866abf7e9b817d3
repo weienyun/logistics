@@ -1,0 +1,10 @@
+package com.sxt;
+
+import org.apache.shiro.crypto.hash.Md5Hash;
+
+public class Test {
+	public static void main(String[] args) {
+		String s =null;
+		System.out.println(Integer.parseInt(s));
+	}
+}

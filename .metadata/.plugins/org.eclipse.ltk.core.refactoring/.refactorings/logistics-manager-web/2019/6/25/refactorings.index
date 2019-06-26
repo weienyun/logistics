@@ -3,3 +3,9 @@
 1561100297240	Delete elements
 1561100855427	Rename resource 'db.propertis'
 1561100972736	Move 'db.properties' to 'properties'
+1561112633700	Move 'log4j.properties' to 'resources'
+1561168765001	Move 'role.jsp' to 'role'
+1561168795370	Copy file
+1561168843694	Rename resource 'role.jsp'
+1561170768034	Copy compilation unit
+1561208628905	Rename resource 'pageBarjsp.jsp'

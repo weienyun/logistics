@@ -1,0 +1,70 @@
+package com.sxt.realm;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.aspectj.weaver.patterns.BasicTokenSource;
+
+import com.github.pagehelper.PageInfo;
+import com.sxt.pojo.Role;
+import com.sxt.pojo.User;
+import com.sxt.service.IUserService;
+import com.sxt.vo.UserVo;
+/**
+ * 自定义域 认证授权
+ * @author Administrator
+ *
+ */
+public class MyRealm extends AuthorizingRealm {
+	@Resource
+	private IUserService userService;
+	/**
+	 * 授权认证
+	 */
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		// TODO Auto-generated method stub
+		//认证传的是user  info =  new SimpleAuthenticationInfo(user, password,salt,"myrealm");
+		User user = (User) principals.getPrimaryPrincipal();
+		Integer userId = user.getUserId();
+		List<Role> roles = userService.queryRolesByUserId(userId);
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		//添加角色 权限（暂无）
+		for (Role role : roles) {
+			System.out.println(role.getRoleName());
+			info.addRole(role.getRoleName());
+		}
+		return info;
+	}
+	/**
+	 * 认证 只认证用户（密码交给后面）
+	 */
+	@Override
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		// TODO Auto-generated method stub
+		AuthenticationInfo info = null;
+		String username = (String) token.getPrincipal();
+		User user =new User();
+		user.setUserName(username);
+		List<User> list = userService.queryByName(user);
+		if (list!=null&&list.size()==1) {
+			String password = list.get(0).getPassword();
+			ByteSource salt = ByteSource.Util.bytes(list.get(0).getU1());
+			user = list.get(0);
+			info =  new SimpleAuthenticationInfo(user, password,salt,"myrealm");
+		}
+		System.out.println(info+"--");
+		return info;
+	}
+
+}

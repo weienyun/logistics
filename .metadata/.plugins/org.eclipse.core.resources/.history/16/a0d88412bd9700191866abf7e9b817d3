@@ -1,0 +1,76 @@
+package com.sxt.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.sxt.mapper.BasicDataMapper;
+import com.sxt.pojo.BasicData;
+import com.sxt.pojo.BasicDataExample;
+import com.sxt.service.IBasicService;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+@Service
+public class BasicServiceImpl implements IBasicService{
+	@Resource
+	private BasicDataMapper mapper;
+	@Resource
+	private Jedis jedis;
+	
+	private static final String keyPrefix = "basciData";
+	
+	@Override
+	public List<BasicData> query(BasicData bd) {
+		// TODO Auto-generated method stub
+		//查看jedis缓存是否有  basicData:2 baseId:2 parentId:1 basename: basedesc:
+		jedis.get
+	
+		BasicDataExample example = new BasicDataExample();
+		
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public void addBasicData(BasicData bd) {
+		// TODO Auto-generated method stub
+		
+		mapper.insert(bd);
+	}
+
+	@Override
+	public void deleteBasicData(int id) {
+		// TODO Auto-generated method stub
+		mapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public void updateBasicData(BasicData bd) {
+		// TODO Auto-generated method stub
+		mapper.updateByPrimaryKeySelective(bd);
+	}
+
+	@Override
+	public BasicData queryById(Integer baseId) {
+		// TODO Auto-generated method stub
+		
+		return mapper.selectByPrimaryKey(baseId);
+	}
+
+	@Override
+	public List<BasicData> queryParents() {
+		// TODO Auto-generated method stub
+		BasicDataExample example =new BasicDataExample();
+		example.createCriteria().andParentIdIsNull();
+		return mapper.selectByExample(example);
+	}
+	/*
+	 * 清空缓存
+	 */
+	public void clearRedis(){
+		jedis.keys(keyPrefix+"*");
+	}
+	
+}

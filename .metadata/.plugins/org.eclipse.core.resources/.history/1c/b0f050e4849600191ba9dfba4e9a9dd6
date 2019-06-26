@@ -1,0 +1,138 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<base href="/">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>欢迎登录后台管理系统</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="js/jquery.js"></script>
+<script src="js/cloud.js" type="text/javascript"></script>
+
+<script language="javascript">
+	$(function() {
+		$('.loginbox').css({
+			'position' : 'absolute',
+			'left' : ($(window).width() - 692) / 2
+		});
+		$(window).resize(function() {
+			$('.loginbox').css({
+				'position' : 'absolute',
+				'left' : ($(window).width() - 692) / 2
+			});
+		})
+	});
+</script>
+
+</head>
+
+<body onLoad="document.getElementById('userName').focus();GetCookie();"
+	style="background-color: #1c77ac; background-image: url(images/light.png); background-repeat: no-repeat; background-position: center top; overflow: hidden;">
+
+
+
+	<div id="mainBody">
+		<div id="cloud1" class="cloud"></div>
+		<div id="cloud2" class="cloud"></div>
+	</div>
+
+
+	<div class="logintop">
+		<span>欢迎登录后台管理界面平台</span>
+		<ul>
+			<li><a href="#">回首页</a></li>
+			<li><a href="#">帮助</a></li>
+			<li><a href="#">关于</a></li>
+		</ul>
+	</div>
+
+	<div class="loginbody">
+
+		<span class="systemlogo"></span>
+
+		<div class="loginbox">
+			<form action="/user/login.do" method="post">
+				<ul>
+					<li><input id="userName" name="userName" type="text" class="loginuser"
+						placeholder="admin" /></li>
+					<li><input id="password" name="password" type="text" class="loginpwd"
+						placeholder="密码"/></li>
+					<li><input type="submit" class="loginbtn" value="登录" /> <label><input
+							id="isRmbPwd" type="checkbox" />记住密码</label><label><a
+							href="#">忘记密码？</a></label> <label><font color="red">${msg}</label></li>
+					<li><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+							name="rememberMe" type="checkbox"/ ><font color="red">记住我</font>
+					</label></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+	<div class="loginbm">
+		版权所有 2013 <a href="http://www.uimaker.com">uimaker.com</a>
+		仅供学习交流，勿用于任何商业用途
+	</div>
+
+
+	<div style="display: none">
+		<script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540'
+			language='JavaScript' charset='gb2312'></script>
+	</div>
+	<script type="text/javascript">
+	function check ()
+	{
+	    //获取表单输入:用户名,密码,是否保存密码
+	    var username = document.getElementById("userName").value.trim() ;
+	    var password = document.getElementById("password").value.trim() ;
+	    var isRmbPwd = document.getElementById("isRmbPwd").checked ;
+	    
+	    //判断用户名,密码是否为空(全空格也算空)
+	    if ( username.length != 0 && password.length != 0 )
+	    {
+	        //若复选框勾选,则添加Cookie,记录密码
+	        if ( isRmbPwd == true )
+	        {   
+	            setCookie ( "This is username", username, 7 ) ;
+	            setCookie ( username, password, 7 ) ;
+	        }
+	        //否则清除Cookie
+	        else
+	        {
+	            delCookie ( "This is username" ) ;
+	            delCookie ( username ) ;
+	        }
+	        return true ;
+	    }
+	    //非法输入提示
+	    else
+	    {
+	        alert('请输入必填字段!!!')
+	        return false ;
+	    }   
+	}
+	//将function函数赋值给onload对象
+	window.onload = function ()
+	{
+	    //从Cookie获取到用户名
+	    var username = getCookie("This is username") ;
+	    //如果用户名为空,则给表单元素赋空值
+	    if ( username == "" )
+	    {
+	        document.getElementById("username").value="" ;
+	        document.getElementById("password").value="" ;
+	        document.getElementById("isRmbPwd").checked=false ;
+	    }
+	    //获取对应的密码,并把用户名,密码赋值给表单
+	    else
+	    {
+	        var password = getCookie(username) ;
+	    
+	        document.getElementById("username").value = username ;
+	        document.getElementById("password").value = password ;
+	        document.getElementById("isRmbPwd").checked = true ;
+	    }
+	}
+	</script>
+</body>
+</html>
